@@ -17,13 +17,10 @@ connectDB()
 app.use(express.json())
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",           // your local Vite dev server
-    "https://mindtrace-khaki.vercel.app/" // replace with your actual Vercel frontend URL
-  ],
-  credentials: true                     // allows cookies/session to be sent
+  origin: "https://mindtrace-khaki.vercel.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }));
-app.options("*", cors());
 app.use(session({
 secret:process.env.SESSION_SECRET,
 resave:false,
