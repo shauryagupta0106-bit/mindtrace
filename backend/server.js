@@ -19,11 +19,11 @@ app.use(express.json())
 app.use(cors({
   origin: [
     "http://localhost:5173",           // your local Vite dev server
-    "https://your-vercel-url.vercel.app" // replace with your actual Vercel frontend URL
+    "https://mindtrace-khaki.vercel.app/" // replace with your actual Vercel frontend URL
   ],
   credentials: true                     // allows cookies/session to be sent
 }));
-
+app.options("*", cors());
 app.use(session({
 secret:process.env.SESSION_SECRET,
 resave:false,

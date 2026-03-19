@@ -16,6 +16,17 @@ exports.register = async (req, res) => {
         })
 
         res.json(user)
+        res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,       // required for HTTPS (Vercel + Render)
+      sameSite: "None"    // VERY IMPORTANT for cross-origin
+    });
+
+    // send response
+    res.status(200).json({
+      message: "Login successful",
+      user
+    });
 
     } catch (error) {
 
