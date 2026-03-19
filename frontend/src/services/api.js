@@ -1,8 +1,7 @@
-import axios from "axios"
+import axios from 'axios';
+const api = axios.create({
+  baseURL: 'https://mindtrace-94bp.onrender.com/api',
+  withCredentials: true   // if you already had this
+});
 
-const API = axios.create({
-  baseURL: "http://localhost:5000/api",
-  withCredentials: true
-})
-
-export default API
+export default api

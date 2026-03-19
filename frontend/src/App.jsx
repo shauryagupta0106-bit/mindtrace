@@ -1,9 +1,9 @@
 import { BrowserRouter,Routes,Route } from "react-router-dom"
 
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
-import CreateThought from "./pages/createthought"
+import Login from "./pages/login.jsx";
+import Signup from "./pages/signup.jsx";
+import Dashboard from "./pages/dashboard.jsx";
+import CreateThought from "./pages/createthought.jsx"
 
 import ProtectedRoute from "./components/protectedroute"
 
