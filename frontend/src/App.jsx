@@ -3,7 +3,7 @@ import { BrowserRouter,Routes,Route } from "react-router-dom"
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import CreateThought from "./pages/Createthought.jsx"
+import CreateThought from "./pages/CreateThought.jsx"
 
 import ProtectedRoute from "./components/ProtectedRoute"
 
