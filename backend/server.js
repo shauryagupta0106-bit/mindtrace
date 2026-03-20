@@ -1,45 +1,28 @@
 const express = require("express")
+const mongoose = require("mongoose")
 const cors = require("cors")
-const session = require("express-session")
-const dotenv = require("dotenv")
-
-const connectDB = require("./config/db")
-
-const authRoutes = require("./routes/authroutes")
-const thoughtRoutes = require("./routes/thoughtroutes")
-
-dotenv.config()
+const cookieParser = require("cookie-parser")
+require("dotenv").config()
 
 const app = express()
 
-connectDB()
-
+// middleware
 app.use(express.json())
+app.use(cookieParser())
 
 app.use(cors({
-  origin: "https://mindtrace-khaki.vercel.app",
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-}));
-app.use(session({
-secret:process.env.SESSION_SECRET,
-resave:false,
-saveUninitialized:false,
-cookie:{
-secure:false,
-httpOnly:true
-}
+  origin: "https://mindtrace-94bp.vercel.app", // your frontend URL
+  credentials: true
 }))
 
-app.use("/uploads", express.static("uploads"))
+// routes
+app.use("/api/auth", require("./routes/authRoutes"))
+app.use("/api/thoughts", require("./routes/thoughtRoutes"))
 
-app.get("/", (req, res) => {
-  res.send("MindTrace API Running 🚀")
-})
+// DB connect
+mongoose.connect(process.env.MONGO_URI)
+.then(()=> console.log("MongoDB Connected"))
+.catch(err => console.log(err))
 
-app.use("/api/auth",authRoutes)
-app.use("/api/thoughts",thoughtRoutes)
-
-app.listen(process.env.PORT,()=>{
-console.log("Server running on port",process.env.PORT)
-})
+// start server
+app.listen(5000, ()=> console.log("Server running on port 5000"))
