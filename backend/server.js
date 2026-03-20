@@ -12,7 +12,10 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(cors({
-  origin: "https://mindtrace-94bp.vercel.app", // your frontend URL
+  origin: [
+    "https://mindtrace-khaki.vercel.app", // ✅ your current frontend
+    "http://localhost:5173" // optional for local testing
+  ],
   credentials: true
 }))
 
