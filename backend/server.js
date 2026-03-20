@@ -3,7 +3,8 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
 require("dotenv").config()
-
+const authRoutes = require('./routes/authRoutes');
+const thoughtsRoutes = require('./routes/thoughtsRoutes');
 const app = express()
 
 // middleware
@@ -17,7 +18,7 @@ app.use(cors({
 
 // routes
 app.use("/api/auth", require("./routes/authRoutes"))
-app.use("/api/thoughts", require("./routes/thoughtRoutes"))
+app.use("/api/thoughts", require("./routes/thoughtsRoutes"))
 
 // DB connect
 mongoose.connect(process.env.MONGO_URI)
