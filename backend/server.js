@@ -6,7 +6,7 @@ require("dotenv").config()
 const authRoutes = require('./routes/authRoutes');
 const thoughtsRoutes = require('./routes/thoughtsRoutes');
 const app = express()
-
+app.set("trust proxy", 1); 
 // middleware
 app.use(express.json())
 app.use(cookieParser())

@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom"
 const Signup = () => {
 
   const [form,setForm] = useState({
-    username:"",
-    email:"",
-    password:""
-  })
+  name:"",  
+  email:"",
+  password:""
+})
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -25,7 +25,7 @@ const Signup = () => {
   const handleSubmit = async (e)=>{
     e.preventDefault()
 
-    const res = await API.post("/auth/signup",form)
+    const res = await API.post("/auth/register", form) 
 
     dispatch(setUser(res.data))
 
@@ -46,8 +46,8 @@ const Signup = () => {
         </h2>
 
         <input
-          name="username"
-          placeholder="Username"
+          name="name"
+          placeholder="Name"
           onChange={handleChange}
           className="border p-2 w-full mb-3"
         />
