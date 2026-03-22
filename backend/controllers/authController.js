@@ -1,80 +1,118 @@
-const User = require("../models/User")
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const User = require("../models/User");
 
-// REGISTER
-exports.register = async (req, res) => {
+
+// 🟢 Signup
+const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body
+    const { username, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email })
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" })
+    // Check if user exists
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+      return res.status(400).json({ message: "User already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-
+    // Create user
     const user = await User.create({
-      name,
+      username,
       email,
-      password: hashedPassword
-    })
+      password,
+    });
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    )
+    // Store session
+    req.session.userId = user._id;
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None"
-    })
-
-    res.status(200).json({
+    res.status(201).json({
       message: "User registered successfully",
-      user
-    })
-
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error registering user" })
+    console.error("Signup Error:", error.message);
+    res.status(500).json({ message: "Server error during signup" });
   }
-}
+};
 
-// LOGIN
-exports.login = async (req, res) => {
+
+// 🔵 Login
+const login = async (req, res) => {
   try {
-    const { email, password } = req.body
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ email })
+    // Find user
+    const user = await User.findOne({ email });
+
     if (!user) {
-      return res.status(400).json({ message: "User not found" })
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password)
+    // Check password
+    const isMatch = await user.matchPassword(password);
+
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid password" })
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    )
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None"
-    })
+    // Store session
+    req.session.userId = user._id;
 
     res.status(200).json({
       message: "Login successful",
-      user
-    })
-
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: "Login error" })
+    console.error("Login Error:", error.message);
+    res.status(500).json({ message: "Server error during login" });
   }
-}
+};
+
+
+// 🔴 Logout
+const logout = (req, res) => {
+  try {
+    req.session.destroy(() => {
+      res.clearCookie("connect.sid");
+      res.status(200).json({ message: "Logged out successfully" });
+    });
+  } catch (error) {
+    console.error("Logout Error:", error.message);
+    res.status(500).json({ message: "Server error during logout" });
+  }
+};
+
+
+// 🟡 Get current user
+const getMe = async (req, res) => {
+  try {
+    if (!req.session.userId) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    const user = await User.findById(req.session.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("GetMe Error:", error.message);
+    res.status(500).json({ message: "Server error fetching user" });
+  }
+};
+
+
+module.exports = {
+  signup,
+  login,
+  logout,
+  getMe,
+};

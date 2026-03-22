@@ -1,32 +1,75 @@
-const express = require("express")
-const mongoose = require("mongoose")
-const cors = require("cors")
-const cookieParser = require("cookie-parser")
-require("dotenv").config()
-const authRoutes = require('./routes/authRoutes');
-const thoughtsRoutes = require('./routes/thoughtsRoutes');
-const app = express()
-app.set("trust proxy", 1); 
-// middleware
-app.use(express.json())
-app.use(cookieParser())
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const session = require("express-session");
+const path = require("path");
 
-app.use(cors({
-  origin: [
-    "https://mindtrace-khaki.vercel.app", // ✅ your current frontend
-    "http://localhost:5173" // optional for local testing
-  ],
-  credentials: true
-}))
+// Load env variables
+dotenv.config();
 
-// routes
-app.use("/api/auth", require("./routes/authRoutes"))
-app.use("/api/thoughts", require("./routes/thoughtsRoutes"))
+// DB Connection
+const connectDB = require("./config/db");
 
-// DB connect
-mongoose.connect(process.env.MONGO_URI)
-.then(()=> console.log("MongoDB Connected"))
-.catch(err => console.log(err))
+// Routes
+const authRoutes = require("./routes/authRoutes");
+const thoughtRoutes = require("./routes/thoughtRoutes");
 
-// start server
-app.listen(5000, ()=> console.log("Server running on port 5000"))
+// Initialize app
+const app = express();
+
+// Connect Database
+connectDB();
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// CORS (important for frontend connection)
+app.use(
+  cors({
+    origin: "http://localhost:5173", // React Vite default
+    credentials: true,
+  })
+);
+
+// Session setup
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "supersecretkey",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // true only in HTTPS
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
+  })
+);
+
+// Static folder for uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/thoughts", thoughtRoutes);
+
+// Health check route
+app.get("/", (req, res) => {
+  res.send("🚀 MindTrace API is running...");
+});
+
+// Global Error Handler (VERY IMPORTANT)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message: "Something went wrong",
+    error: err.message,
+  });
+});
+
+// Server listen
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`🔥 Server running on port ${PORT}`);
+});

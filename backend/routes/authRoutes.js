@@ -1,15 +1,27 @@
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const { register, login } = require("../controllers/authController")
+const {
+  signup,
+  login,
+  logout,
+  getMe,
+} = require("../controllers/authController");
 
-// test route
-router.get("/", (req, res) => {
-  res.send("Auth route working")
-})
+const { protect } = require("../middleware/authMiddleware");
 
-// actual routes
-router.post("/register", register)
-router.post("/login", login)
 
-module.exports = router
+// 🟢 Signup
+router.post("/signup", signup);
+
+// 🔵 Login
+router.post("/login", login);
+
+// 🔴 Logout
+router.get("/logout", logout);
+
+// 🟡 Get current user (protected)
+router.get("/me", protect, getMe);
+
+
+module.exports = router;
