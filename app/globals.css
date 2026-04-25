@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Syne:wght@400..800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,40 +15,53 @@
   --text-muted: #64748B;
   --glow-purple: 0 0 20px rgba(124, 58, 237, 0.4);
   --glow-cyan: 0 0 20px rgba(6, 182, 212, 0.4);
-
-  --font-syne: 'Syne', sans-serif;
-  --font-dm-sans: 'DM Sans', sans-serif;
 }
 
-body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font-dm-sans);
+@layer base {
+  body {
+    @apply bg-[#0B0F1A] text-[#F1F5F9];
+    font-family: var(--font-dm-sans), sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-syne), sans-serif;
+    @apply tracking-tight font-bold;
+  }
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-syne);
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-xl bg-white/[0.04] border border-white/[0.08] rounded-2xl;
+  }
+
+  .btn-glow {
+    @apply transition-all duration-300;
+    box-shadow: var(--glow-purple);
+  }
+
+  .btn-glow:hover {
+    @apply scale-[1.02];
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.6);
+  }
+
+  .input-glow {
+    @apply bg-[#0B0F1A] border-white/10 transition-all duration-200;
+  }
+
+  .input-glow:focus {
+    @apply outline-none border-accent-purple;
+    box-shadow: var(--glow-purple);
+  }
 }
 
-.glass-card {
-  backdrop-filter: blur(12px);
-  background-color: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 1rem;
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.btn-primary {
-  background: var(--gradient-primary);
-  box-shadow: var(--glow-purple);
-  transition: transform 0.2s ease-in-out;
+::-webkit-scrollbar-track {
+  @apply bg-background;
 }
 
-.btn-primary:hover {
-  transform: scale(1.02);
-}
-
-.input-glow:focus {
-  outline: none;
-  border-color: var(--accent-purple);
-  box-shadow: var(--glow-purple);
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
 }

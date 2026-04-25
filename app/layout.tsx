@@ -1,7 +1,18 @@
 import type { Metadata } from "next";
+import { Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { AppShell } from "@/components/layout/AppShell";
 import { Providers } from "./providers";
+
+const syne = Syne({
+  subsets: ["latin"],
+  variable: "--font-syne",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+});
 
 export const metadata: Metadata = {
   title: "MindTrace — Cognitive Journaling SaaS",
@@ -14,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="font-body antialiased">
+    <html lang="en" className={`${syne.variable} ${dmSans.variable}`}>
+      <body className="font-body bg-background text-text-primary antialiased">
         <Providers>
           <AppShell>{children}</AppShell>
         </Providers>
