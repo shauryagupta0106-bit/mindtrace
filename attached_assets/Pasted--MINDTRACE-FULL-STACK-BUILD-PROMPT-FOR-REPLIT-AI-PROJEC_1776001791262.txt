@@ -1,0 +1,308 @@
+# MINDTRACE — FULL-STACK BUILD PROMPT FOR REPLIT AI
+
+## PROJECT IDENTITY
+App Name: MindTrace
+Concept: A dark premium cognitive journaling SaaS — users log thoughts, track emotional patterns, predict cognitive outcomes, and gain insights via AI.
+
+---
+
+## TECH STACK (NON-NEGOTIABLE)
+- Framework: Next.js 14 (App Router)
+- Language: TypeScript (strict mode)
+- Styling: Tailwind CSS + CSS custom properties for theming
+- UI: Custom components (no component library dependencies)
+- Animation: Framer Motion
+- Database: PostgreSQL via Prisma ORM
+- Auth: NextAuth.js with Google OAuth provider
+- File Storage: Cloudinary (evidence/image uploads)
+- Voice: Web Speech API (SpeechRecognition + SpeechSynthesis)
+- State: Zustand (client) + TanStack Query (server state)
+- Forms: React Hook Form + Zod
+- Realtime: Pusher (optional, for live sync)
+
+---
+
+## DESIGN SYSTEM
+
+### Color Palette (CSS variables in globals.css)
+```css
+:root {
+  --bg-primary: #0B0F1A;
+  --bg-secondary: #0F1525;
+  --glass-bg: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+  --accent-purple: #7C3AED;
+  --accent-cyan: #06B6D4;
+  --accent-blue: #3B82F6;
+  --gradient-primary: linear-gradient(135deg, #7C3AED, #06B6D4);
+  --text-primary: #F1F5F9;
+  --text-muted: #64748B;
+  --glow-purple: 0 0 20px rgba(124,58,237,0.4);
+  --glow-cyan: 0 0 20px rgba(6,182,212,0.4);
+}
+```
+
+### Component Patterns
+- Cards: `backdrop-blur-xl bg-white/4 border border-white/8 rounded-2xl`
+- Buttons: Gradient background + box-shadow glow + scale(1.02) on hover
+- Inputs: Dark bg + glowing purple focus ring
+- Modals: Blurred backdrop + scale-in animation
+
+### Typography
+- Headings: `font-bold tracking-tight` — futuristic weight
+- Body: `font-normal leading-relaxed` — readable
+- Use Google Fonts: Syne (headings) + DM Sans (body)
+
+---
+
+## FOLDER STRUCTURE (CREATE ALL OF THESE)
+/app
+layout.tsx              ← Root layout with ThemeProvider
+page.tsx                ← Landing page
+/auth/page.tsx          ← Google sign-in
+/dashboard/page.tsx     ← Main dashboard
+/thoughts/page.tsx      ← All thoughts list
+/thoughts/[id]/page.tsx ← Thought detail + editor
+/timeline/page.tsx      ← Chronological + graph view
+/analytics/page.tsx     ← Cognitive analytics
+/new-thought/page.tsx   ← Create thought + voice input
+/settings/page.tsx      ← Profile + integrations
+/api/auth/[...nextauth]/route.ts
+/api/thoughts/route.ts  ← GET all, POST create
+/api/thoughts/[id]/route.ts ← GET one, PUT update, DELETE
+/api/analytics/route.ts
+/api/timeline/route.ts
+/api/memory/route.ts    ← DELETE wipe memory
+/components
+/ui
+Button.tsx
+Card.tsx
+Input.tsx
+Modal.tsx
+Badge.tsx
+Spinner.tsx
+/layout
+Navbar.tsx
+Sidebar.tsx
+AppShell.tsx
+/voice
+VoiceRecorderButton.tsx
+LiveTranscriptDisplay.tsx
+VoiceToThoughtProcessor.tsx
+/features
+/thoughts
+ThoughtCard.tsx
+ThoughtEditor.tsx
+EmotionSelector.tsx
+TagInput.tsx
+EvidenceUploader.tsx
+PredictionPanel.tsx
+/analytics
+CognitiveGraph.tsx
+InsightCard.tsx
+EmotionChart.tsx
+/timeline
+TimelineView.tsx
+TimelineEntry.tsx
+/hooks
+useVoiceInput.ts
+useThoughts.ts
+useAnalytics.ts
+/store
+authStore.ts
+themeStore.ts
+thoughtStore.ts
+voiceStore.ts
+/lib
+/db/prisma.ts
+/auth/options.ts
+/utils/cn.ts
+/utils/formatDate.ts
+/prisma
+schema.prisma
+
+---
+
+## PRISMA SCHEMA
+
+```prisma
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  image     String?
+  thoughts  Thought[]
+  createdAt DateTime  @default(now())
+}
+
+model Thought {
+  id          String     @id @default(cuid())
+  title       String
+  context     String
+  emotion     String
+  intensity   Int        @default(5)
+  tags        String[]
+  prediction  String?
+  evidence    Evidence[]
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Evidence {
+  id        String   @id @default(cuid())
+  url       String
+  type      String
+  thoughtId String
+  thought   Thought  @relation(fields: [thoughtId], references: [id])
+}
+```
+
+---
+
+## PAGE SPECIFICATIONS
+
+### Landing (/)
+- Dark hero with animated neural/face graphic (CSS or SVG)
+- Headline: "Understand Your Mind. Predict Your Outcomes."
+- CTA: "Start Exploring" → /auth
+- 3 feature cards (glassmorphism)
+- "How It Works" section (3 steps)
+- Footer with logo
+
+### Auth (/auth)
+- Centered glass card on dark bg
+- Logo + tagline
+- Single "Continue with Google" button
+- NextAuth signIn("google") on click
+
+### Dashboard (/dashboard)
+- Greeting: "Good morning, [name]"
+- Quick action: "Log New Thought" button → /new-thought
+- Recent thoughts (last 5 ThoughtCards)
+- Stats row: total thoughts, avg emotion, streak
+- Memory bank section with "Clear Memory" button (confirmation modal)
+
+### New Thought (/new-thought)
+- Form fields: Title, Context (textarea), Emotion selector, Tags, Intensity slider
+- VOICE INPUT BUTTON (critical):
+  - Mic icon button
+  - On click: request mic permission → start SpeechRecognition
+  - Show live transcript in real-time below button
+  - Auto-populate: first sentence → Title, remainder → Context
+  - Allow manual edit after transcription
+  - Stop button to finalize
+  - Handle unsupported browser gracefully
+- AI Prediction panel: calls /api/thoughts with partial data, returns prediction
+- Submit → POST /api/thoughts → redirect to /dashboard
+
+### Thought Detail (/thoughts/[id])
+- Editable thought (PUT /api/thoughts/[id])
+- Emotion + intensity display
+- Tags display
+- Evidence wallet (upload images → Cloudinary)
+- Prediction display
+- Delete button (with confirmation)
+
+### Timeline (/timeline)
+- Chronological list of all thoughts
+- Color coded: positive emotions (green glow), negative (red glow)
+- Filter by date range, emotion type
+- Cognitive fatigue warning if 5+ negative thoughts in 24h
+
+### Analytics (/analytics)
+- Line chart: emotion intensity over time
+- Bar chart: thoughts per day/week
+- Emotion distribution pie/donut
+- Insight cards: "You think most clearly on Tuesdays"
+- Correlation engine: tags vs emotion patterns
+
+### Settings (/settings)
+- Profile: avatar, name, email (read-only from Google)
+- Theme toggle: dark/light
+- Clear all data button
+- API key display (generated UUID, stored in DB)
+
+---
+
+## VOICE INPUT SYSTEM (CRITICAL — IMPLEMENT FULLY)
+
+```typescript
+// hooks/useVoiceInput.ts
+export function useVoiceInput() {
+  // Use window.SpeechRecognition || window.webkitSpeechRecognition
+  // continuous: true, interimResults: true
+  // onresult: update transcript state live
+  // Return: { isListening, transcript, startListening, stopListening, isSupported }
+}
+```
+
+```typescript
+// components/voice/VoiceRecorderButton.tsx
+// - Mic button with pulsing animation when active
+// - Shows LiveTranscriptDisplay when listening
+// - On stop: calls onTranscriptComplete(transcript) callback
+// - Parent (new-thought page) splits transcript and fills form fields
+```
+
+---
+
+## API ROUTES (IMPLEMENT ALL WITH REAL DB CALLS)
+GET  /api/thoughts         → prisma.thought.findMany({ where: { userId } })
+POST /api/thoughts         → prisma.thought.create(...)
+GET  /api/thoughts/[id]    → prisma.thought.findUnique(...)
+PUT  /api/thoughts/[id]    → prisma.thought.update(...)
+DELETE /api/thoughts/[id]  → prisma.thought.delete(...)
+GET  /api/analytics        → aggregated stats from thoughts
+GET  /api/timeline         → thoughts sorted by date with emotion metadata
+DELETE /api/memory         → prisma.thought.deleteMany({ where: { userId } })
+
+All routes must:
+- Check session via `getServerSession(authOptions)`
+- Return 401 if unauthenticated
+- Return proper HTTP status codes
+- Use try/catch with error responses
+
+---
+
+## THEME SYSTEM
+
+```typescript
+// store/themeStore.ts — Zustand
+// Toggle between 'dark' and 'light'
+// Persist to localStorage
+// Apply class to document.documentElement
+
+// Light theme overrides:
+// --bg-primary: #F8FAFC
+// --bg-secondary: #F1F5F9
+// --glass-bg: rgba(0,0,0,0.03)
+// --text-primary: #0F172A
+```
+
+---
+
+## ENVIRONMENT VARIABLES NEEDED (.env.local)
+DATABASE_URL=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
+---
+
+## EXECUTION RULES
+1. Generate ALL files listed in folder structure
+2. No placeholder UI — every page must render real data from DB
+3. All buttons must be functional and wired to correct handlers
+4. Auth must gate all /dashboard, /thoughts, /analytics, /timeline, /settings routes
+5. Voice input must work in Chrome/Edge; show graceful error in Firefox/Safari
+6. Framer Motion animations on: page transitions, card hovers, modal open/close, voice pulse
+7. Mobile responsive: sidebar collapses to bottom nav on mobile
+8. No mock data anywhere — seed DB with prisma db seed if needed for demo
+9. Run `prisma generate` and `prisma db push` on setup
+10. Install all dependencies in package.json automatically

@@ -1,0 +1,135 @@
+You are a senior full-stack engineer.
+
+Your task is to FIX a specific bug and IMPROVE UI WITHOUT breaking any existing working functionality.
+
+⚠️ CRITICAL RULE:
+- DO NOT rewrite the whole project
+- DO NOT change working features
+- ONLY fix broken parts and enhance UI safely
+
+-----------------------------------
+🐞 BUG TO FIX (HIGH PRIORITY)
+-----------------------------------
+
+Problem:
+When clicking "Save Trace + Prediction", it shows:
+"Failed to save. Please try again."
+
+Trace is NOT being stored or displayed.
+
+-----------------------------------
+🔍 STEP 1: DEBUG THE ISSUE
+-----------------------------------
+
+Check:
+
+1. Frontend button handler:
+- Ensure onClick calls async save function
+- Ensure correct data is being sent
+
+2. API call:
+- Verify fetch/axios URL is correct
+- Fix relative vs absolute path (Vite issue likely)
+- Ensure:
+  fetch("/api/trace", { method: "POST", ... })
+
+3. Request body:
+Must send:
+{
+  input,
+  prediction,
+  confidence,
+  reasoning,
+  steps,
+  timestamp
+}
+
+4. Backend route:
+Ensure this exists and works:
+
+POST /api/trace
+
+- Add console logs to confirm request is received
+- Validate body
+- Return proper response:
+  res.status(200).json({ success: true, trace })
+
+5. Storage:
+- If using file/JSON DB → ensure write works
+- If using in-memory → ensure state persists
+- Add fallback to localStorage if backend fails
+
+-----------------------------------
+💾 STEP 2: MAKE SAVE BULLETPROOF
+-----------------------------------
+
+- Add try/catch in frontend
+- Show real error message in console
+- Add fallback:
+
+IF API fails:
+→ Save trace in localStorage
+→ Show success toast anyway
+
+-----------------------------------
+📡 STEP 3: VERIFY DATA FLOW
+-----------------------------------
+
+After clicking save:
+
+✔ Trace must:
+- Be stored
+- Appear in Timeline / Thoughts / Trace Panel
+- Persist after refresh (localStorage or backend)
+
+-----------------------------------
+🎨 STEP 4: SAFE UI UPGRADE (NO BREAKAGE)
+-----------------------------------
+
+Improve UI WITHOUT touching logic:
+
+- Enhance "Save Trace" button:
+  - Add gradient glow
+  - Add subtle hover scale
+  - Add click ripple animation
+
+- Improve error toast:
+  - Make it glassy + blurred background
+  - Smooth slide-in animation
+  - Better typography
+
+- Improve prediction card:
+  - Add soft glow border
+  - Slight gradient overlay
+  - Smooth expand for "Show thought process"
+
+- Add micro-interactions ONLY:
+  - Hover effects
+  - Smooth transitions
+  - NO layout changes
+
+-----------------------------------
+🌗 STEP 5: THEME ENHANCEMENT (SAFE)
+-----------------------------------
+
+- Improve dark/light theme colors ONLY
+- DO NOT change structure
+- Add subtle animated gradient shift in background
+
+-----------------------------------
+✅ STEP 6: FINAL CHECK
+-----------------------------------
+
+Before finishing:
+
+- Click "Save Trace + Prediction"
+- Confirm:
+  ✔ No error
+  ✔ Trace saved
+  ✔ UI updates instantly
+  ✔ Data persists after refresh
+
+IMPORTANT:
+- Do NOT leave TODOs
+- Do NOT fake success
+- Everything must ACTUALLY work

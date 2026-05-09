@@ -1,0 +1,100 @@
+You are a senior full-stack engineer, AI systems architect, and product designer.
+
+Your task is to FIX, COMPLETE, and UPGRADE my existing website into a fully working, production-ready system with AI cognitive prediction, trace saving, and thought logging.
+
+⚠️ STEP 1: FIX EVERYTHING
+- Detect and fix ALL errors (frontend, backend, API, build, deployment).
+- Ensure:
+  - npm install works
+  - npm run dev works
+  - npm run build works
+- Fix Vite proxy issues and API connection errors.
+- No console errors. No failed requests.
+
+⚙️ STEP 2: IMPLEMENT REAL AI COGNITIVE PREDICTION
+- Build a working backend API (Node.js/Express).
+- Create endpoint: /api/predict
+- Input: user prompt or action
+- Output:
+  {
+    prediction: string,
+    confidence: number,
+    reasoning: string,
+    timestamp: number
+  }
+
+- Use a real AI logic flow (not fake/static):
+  - Either OpenAI API OR structured heuristic logic
+- Ensure async handling, error handling, and loading states.
+
+🧠 STEP 3: TRACE + THOUGHT STORAGE SYSTEM
+Create a full trace system:
+
+- Every prediction must generate a TRACE OBJECT:
+  {
+    id: unique_id,
+    input: string,
+    prediction: string,
+    confidence: number,
+    reasoning: string,
+    steps: array,
+    timestamp: number
+  }
+
+- Save traces in:
+  - Backend (JSON DB or lightweight database like lowdb)
+  - Also persist in browser localStorage
+
+- Create API:
+  - POST /api/trace → save trace
+  - GET /api/trace → fetch all traces
+
+💾 STEP 4: UI FOR TRACE + THOUGHTS
+- Add a “Trace Panel” UI:
+  - Show history of predictions
+  - Expandable cards showing:
+    - Input
+    - Prediction
+    - Confidence
+    - Reasoning
+    - Step-by-step thought process
+
+- Add:
+  - Delete trace
+  - Clear all traces
+  - Smooth animations
+
+🎨 STEP 5: MAKE IT VISUALLY WOW (NON-AI LOOKING)
+- Premium UI (like Stripe / Linear / Apple level)
+- Glassmorphism + gradients + glow
+- Smooth animations (Framer Motion)
+
+🌗 STEP 6: ADVANCED DARK/LIGHT THEME
+- Add theme toggle
+- Each theme must feel intentionally designed (NOT inverted colors)
+- Animate transitions between themes
+- Store preference in localStorage
+
+✨ STEP 7: MICRO INTERACTIONS
+- Hover effects
+- Button animations
+- Smooth transitions
+- Loading skeletons for AI response
+
+📱 STEP 8: RESPONSIVE + CLEAN
+- Mobile + desktop perfect
+- Clean layout, no clutter
+
+🚀 STEP 9: FINAL VERIFICATION (VERY IMPORTANT)
+Before finishing:
+- Check every button works
+- Check API calls succeed
+- Check traces save and load
+- Check no console errors
+- Check build works
+
+IMPORTANT:
+- Do NOT leave placeholders or fake logic
+- Do NOT skip backend
+- Do NOT return partial implementation
+- Deliver COMPLETE working code only

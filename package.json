@@ -1,0 +1,29 @@
+{
+  "name": "workspace",
+  "version": "0.0.0",
+  "license": "MIT",
+  "workspaces": [
+    "artifacts/*",
+    "lib/*",
+    "lib/integrations/*",
+    "scripts"
+  ],
+  "scripts": {
+    "build": "npm run typecheck && npm run build:workspaces",
+    "build:workspaces": "npm run build --workspace=artifacts/mindtrace --workspace=artifacts/api-server --if-present",
+    "typecheck:libs": "tsc --build",
+    "typecheck": "npm run typecheck:libs && npm run typecheck:workspaces",
+    "typecheck:workspaces": "npm run typecheck --workspace=artifacts/mindtrace --workspace=artifacts/api-server --if-present",
+    "dev": "npm run dev --workspace=artifacts/mindtrace",
+    "start": "npm run start --workspace=artifacts/api-server"
+  },
+  "private": true,
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.2"
+  },
+  "dependencies": {
+    "firebase": "^12.12.1"
+  }
+}

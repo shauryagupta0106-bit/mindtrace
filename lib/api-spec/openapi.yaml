@@ -1,0 +1,436 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: MindTrace API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: thoughts
+    description: Thought journaling operations
+  - name: analytics
+    description: Cognitive analytics
+  - name: timeline
+    description: Timeline operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /thoughts:
+    get:
+      operationId: listThoughts
+      tags: [thoughts]
+      summary: List all thoughts
+      parameters:
+        - name: emotion
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of thoughts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Thought"
+        "401":
+          description: Unauthorized
+    post:
+      operationId: createThought
+      tags: [thoughts]
+      summary: Create a new thought
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateThoughtBody"
+      responses:
+        "201":
+          description: Created thought
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Thought"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+
+  /thoughts/{id}:
+    get:
+      operationId: getThought
+      tags: [thoughts]
+      summary: Get a single thought
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A thought
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Thought"
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+    put:
+      operationId: updateThought
+      tags: [thoughts]
+      summary: Update a thought
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateThoughtBody"
+      responses:
+        "200":
+          description: Updated thought
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Thought"
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+    delete:
+      operationId: deleteThought
+      tags: [thoughts]
+      summary: Delete a thought
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+        "401":
+          description: Unauthorized
+
+  /analytics:
+    get:
+      operationId: getAnalytics
+      tags: [analytics]
+      summary: Get cognitive analytics
+      responses:
+        "200":
+          description: Analytics data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Analytics"
+        "401":
+          description: Unauthorized
+
+  /analytics/dashboard:
+    get:
+      operationId: getDashboardSummary
+      tags: [analytics]
+      summary: Get dashboard summary stats
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+        "401":
+          description: Unauthorized
+
+  /timeline:
+    get:
+      operationId: getTimeline
+      tags: [timeline]
+      summary: Get thoughts in timeline format
+      parameters:
+        - name: startDate
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: emotion
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Timeline entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimelineEntry"
+        "401":
+          description: Unauthorized
+
+  /memory:
+    delete:
+      operationId: clearMemory
+      tags: [thoughts]
+      summary: Clear all thoughts (wipe memory)
+      responses:
+        "204":
+          description: Memory cleared
+        "401":
+          description: Unauthorized
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Thought:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        context:
+          type: string
+        emotion:
+          type: string
+        intensity:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        prediction:
+          type: ["string", "null"]
+        userId:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - title
+        - context
+        - emotion
+        - intensity
+        - tags
+        - userId
+        - createdAt
+        - updatedAt
+
+    CreateThoughtBody:
+      type: object
+      properties:
+        title:
+          type: string
+        context:
+          type: string
+        emotion:
+          type: string
+        intensity:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        prediction:
+          type: ["string", "null"]
+      required:
+        - title
+        - context
+        - emotion
+        - intensity
+
+    UpdateThoughtBody:
+      type: object
+      properties:
+        title:
+          type: string
+        context:
+          type: string
+        emotion:
+          type: string
+        intensity:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        prediction:
+          type: ["string", "null"]
+
+    EmotionCount:
+      type: object
+      properties:
+        emotion:
+          type: string
+        count:
+          type: integer
+        avgIntensity:
+          type: number
+      required:
+        - emotion
+        - count
+        - avgIntensity
+
+    DailyActivity:
+      type: object
+      properties:
+        date:
+          type: string
+        count:
+          type: integer
+        avgIntensity:
+          type: number
+      required:
+        - date
+        - count
+        - avgIntensity
+
+    Analytics:
+      type: object
+      properties:
+        totalThoughts:
+          type: integer
+        avgIntensity:
+          type: number
+        emotionBreakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/EmotionCount"
+        dailyActivity:
+          type: array
+          items:
+            $ref: "#/components/schemas/DailyActivity"
+        topTags:
+          type: array
+          items:
+            type: string
+        streak:
+          type: integer
+        mostActiveDay:
+          type: ["string", "null"]
+        cognitiveScore:
+          type: number
+      required:
+        - totalThoughts
+        - avgIntensity
+        - emotionBreakdown
+        - dailyActivity
+        - topTags
+        - streak
+        - cognitiveScore
+
+    DashboardSummary:
+      type: object
+      properties:
+        totalThoughts:
+          type: integer
+        recentThoughts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Thought"
+        streak:
+          type: integer
+        avgEmotionIntensity:
+          type: number
+        dominantEmotion:
+          type: ["string", "null"]
+        cognitiveLoad:
+          type: ["string", "null"]
+      required:
+        - totalThoughts
+        - recentThoughts
+        - streak
+        - avgEmotionIntensity
+
+    TimelineEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        context:
+          type: string
+        emotion:
+          type: string
+        intensity:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        prediction:
+          type: ["string", "null"]
+        userId:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        emotionValence:
+          type: string
+        cognitiveWarning:
+          type: boolean
+      required:
+        - id
+        - title
+        - context
+        - emotion
+        - intensity
+        - tags
+        - userId
+        - createdAt
+        - updatedAt
+        - emotionValence
+        - cognitiveWarning

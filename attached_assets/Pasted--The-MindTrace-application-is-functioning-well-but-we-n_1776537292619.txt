@@ -1,0 +1,21 @@
+"The MindTrace application is functioning well, but we need to refine the UI to make it production-ready and overhaul the aesthetic. Right now, it looks a bit too much like a generic 'AI tool.' Please review the codebase and implement the following fixes:
+
+1. Remove 'Development Mode' Badges: > There is a 'Development mode' warning banner on the Sign-In modal and inside the Account popover menu. If this is from an authentication provider like Clerk, please hide this badge via CSS (e.g., targeting .cl-internal-b3al4t or the respective class) or ensure the app is configured to hide dev warnings so the UI looks completely clean.
+
+2. Fix Account Popover Text Contrast:
+When clicking the Account profile in the bottom-left corner, the popover menu that appears has dark text (like 'Manage account' and 'Sign out') on a very dark background, making it completely unreadable. Please update the CSS/Tailwind classes for this specific popover so the text color is white or a highly legible light gray in dark mode.
+
+3. Fix Theme Toggle State Mismatch:
+On the Settings page under the 'Appearance' section, the text below the Dark Mode toggle says 'Using light theme', even though the application is actively rendering in dark mode. Please fix the state management logic here so the descriptive text accurately matches the active theme being displayed.
+
+4. Production Polish:
+Please do a final sweep to ensure all database connections, routing, and state management for logging thoughts are fully wired up and ready for deployment.
+
+5. Human-Centric Theme Overhaul (Crucial):
+Move the entire application away from the generic 'neon glow and space-black' AI aesthetic. Make it look bespoke, premium, and calming—like a beautiful, intentionally designed personal journal. Please update the global CSS/Tailwind color variables for both modes:
+
+Dark Mode: Ditch the pure black backgrounds and neon magenta/purple gradients. Use a sophisticated 'soft dark' palette (e.g., deep slate gray, dark taupe, or muted midnight). Replace neon buttons with elegant, muted accents (like soft sage green, dusty lavender, or warm terracotta).
+
+Light Mode: Avoid blinding pure white. Use warm, tactile off-whites (like paper, linen, or cream) for backgrounds. Use rich charcoal for text rather than pure black. Use soft, earthy tones for buttons and active states.
+
+Styling Details: Remove heavy, glowing box-shadows. Replace them with clean, subtle borders or very soft, natural drop-shadows. The goal is a tactile, minimalist UI that feels incredibly beautiful and clearly designed by a human."

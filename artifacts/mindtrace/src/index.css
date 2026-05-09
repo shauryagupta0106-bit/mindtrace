@@ -1,0 +1,699 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-sans: var(--app-font-sans);
+  --font-heading: var(--app-font-heading);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-lg);
+  --shadow-2xl: var(--shadow-lg);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.06);
+}
+
+/* ────────────────────────────────────────────
+   Dark mode (default) — deep indigo-slate
+   ──────────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --background: 228 22% 8%;        /* #0d1020 — rich indigo-black */
+  --foreground: 220 18% 92%;       /* #e4e8f5 — bright, clear text */
+
+  /* Cards — clearly elevated above background */
+  --card: 228 20% 14%;             /* #1c2035 — 6pt lightness jump */
+  --card-foreground: 220 18% 92%;
+  --card-border: 226 18% 24%;      /* #2f3655 — visible border */
+
+  /* Sidebar */
+  --sidebar: 228 22% 10%;          /* #131627 — slightly darker than card */
+  --sidebar-foreground: 220 18% 92%;
+  --sidebar-border: 226 18% 20%;   /* #272e4a */
+  --sidebar-primary: 250 82% 70%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 228 20% 18%;   /* #222840 */
+  --sidebar-accent-foreground: 220 18% 92%;
+  --sidebar-ring: 250 82% 70%;
+
+  /* Primary — vivid pinkish-violet, the heart of the brand */
+  --primary: 310 82% 66%;          /* #d95bd9 — beautiful pinkish glow */
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary — hover/secondary surfaces */
+  --secondary: 228 20% 19%;        /* #242a44 */
+  --secondary-foreground: 220 18% 92%;
+
+  /* Muted */
+  --muted: 228 20% 16%;            /* #1e2339 */
+  --muted-foreground: 225 14% 58%; /* #868ea8 — readable secondary text */
+
+  /* Accent — teal for tags, badges, highlights */
+  --accent: 172 60% 50%;           /* #33c2a8 */
+  --accent-foreground: 0 0% 100%;
+
+  /* Destructive */
+  --destructive: 2 72% 60%;        /* #e85454 */
+  --destructive-foreground: 0 0% 100%;
+
+  /* Borders & inputs */
+  --border: 226 18% 22%;           /* #2b3250 */
+  --input: 228 20% 17%;            /* #20263e */
+  --ring: 250 82% 70%;
+
+  /* Popovers */
+  --popover: 228 22% 12%;          /* #171c2e */
+  --popover-foreground: 220 18% 92%;
+  --popover-border: 226 18% 24%;
+
+  /* Charts — vivid but harmonious */
+  --chart-1: 250 82% 70%;          /* indigo */
+  --chart-2: 172 60% 50%;          /* teal */
+  --chart-3: 200 78% 60%;          /* sky */
+  --chart-4: 145 60% 54%;          /* green */
+  --chart-5: 32 90% 62%;           /* amber */
+
+  /* Pink glow accent */
+  --pink: 330 80% 68%;             /* rose-pink for glow accents */
+  --pink-glow: hsl(330 80% 68% / 0.35);
+
+  /* Typography */
+  --app-font-sans: 'DM Sans', sans-serif;
+  --app-font-heading: 'Syne', sans-serif;
+  --radius: 0.875rem;
+
+  /* Shadows — present and confident */
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
+  --shadow:     0 2px 8px rgba(0,0,0,0.42), 0 1px 3px rgba(0,0,0,0.28);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.44), 0 2px 8px rgba(0,0,0,0.28);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.48), 0 4px 16px rgba(0,0,0,0.30);
+}
+
+/* ────────────────────────────────────────────
+   Light mode — cool crisp white with depth
+   ──────────────────────────────────────────── */
+.dark {
+  /* Backgrounds */
+  --background: 220 24% 95%;       /* #edf0f9 — cool off-white, not blinding */
+  --foreground: 228 24% 14%;       /* #1b2038 — deep rich dark */
+
+  /* Cards — pure white for maximum contrast */
+  --card: 0 0% 100%;
+  --card-foreground: 228 24% 14%;
+  --card-border: 222 18% 87%;      /* #d2d8ed */
+
+  /* Sidebar */
+  --sidebar: 220 22% 92%;          /* #e4e9f5 */
+  --sidebar-foreground: 228 24% 14%;
+  --sidebar-border: 222 18% 86%;   /* #d0d6eb */
+  --sidebar-primary: 250 68% 54%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 220 18% 90%;   /* #dde3f2 */
+  --sidebar-accent-foreground: 228 24% 14%;
+  --sidebar-ring: 250 68% 54%;
+
+  /* Primary — deeper indigo for light bg */
+  --primary: 250 68% 54%;          /* #5442d4 */
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary */
+  --secondary: 220 18% 92%;        /* #e4e9f5 */
+  --secondary-foreground: 228 24% 14%;
+
+  /* Muted */
+  --muted: 220 18% 93%;
+  --muted-foreground: 228 14% 46%; /* #5e6882 — readable on white */
+
+  /* Accent */
+  --accent: 172 52% 44%;           /* #35a491 */
+  --accent-foreground: 0 0% 100%;
+
+  /* Destructive */
+  --destructive: 2 68% 50%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Borders & inputs */
+  --border: 222 18% 87%;
+  --input: 220 18% 93%;
+  --ring: 250 68% 54%;
+
+  /* Popovers */
+  --popover: 0 0% 100%;
+  --popover-foreground: 228 24% 14%;
+  --popover-border: 222 18% 87%;
+
+  /* Charts */
+  --chart-1: 250 68% 54%;
+  --chart-2: 172 52% 44%;
+  --chart-3: 200 65% 50%;
+  --chart-4: 145 55% 46%;
+  --chart-5: 32 80% 54%;
+
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.06);
+  --shadow:     0 1px 4px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.05);
+  --shadow-md:  0 2px 8px rgba(0,0,0,0.10), 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg:  0 4px 16px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08);
+}
+
+/* ── Base ── */
+@layer base {
+  * {
+    @apply border-border;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.15s ease;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: block;
+    width: 100%;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--app-font-heading);
+  }
+}
+
+/* ── Keyframes ── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  50%  { transform: scale(1.12); opacity: 0.4; }
+  100% { transform: scale(1);   opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes ripple {
+  0%   { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(0); opacity: 0; }
+  12% { opacity: 0.22; }
+  88% { opacity: 0.12; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.35); }
+  50% { box-shadow: 0 0 0 10px rgba(124, 58, 237, 0); }
+}
+
+/* ── Save trace button — enhanced ── */
+.save-btn {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, hsl(250 82% 62%), hsl(330 80% 62%), hsl(280 75% 60%));
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  box-shadow:
+    0 0 0 1px hsl(250 82% 70% / 0.35),
+    0 4px 20px hsl(250 82% 62% / 0.45),
+    0 0 40px hsl(330 80% 62% / 0.2);
+}
+.save-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+  background-size: 200% 100%;
+  background-position: -100% 0;
+  transition: background-position 0.6s ease;
+}
+.save-btn:hover:not(:disabled)::before {
+  background-position: 200% 0;
+}
+.save-btn:hover:not(:disabled) {
+  transform: translateY(-1px) scale(1.015);
+  box-shadow:
+    0 0 0 1px hsl(330 80% 68% / 0.5),
+    0 6px 28px hsl(250 82% 62% / 0.55),
+    0 0 60px hsl(330 80% 62% / 0.3);
+}
+.save-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.99);
+}
+.save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ── Stat card ── */
+.stat-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--card-border));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary)/0.6), transparent);
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Thought card (inner app) ── */
+.thought-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--card-border));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  overflow: hidden;
+}
+.thought-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: hsl(var(--primary)/0.25);
+}
+
+/* ── Voice record button pulsing ring ── */
+.voice-active::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid hsl(var(--destructive)/0.5);
+  animation: pulse-ring 1.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── Emotion picker button ── */
+.emotion-btn {
+  border: 1.5px solid transparent;
+  border-radius: 0.75rem;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: hsl(var(--muted));
+}
+.emotion-btn:hover {
+  background: hsl(var(--secondary));
+  transform: scale(1.04);
+}
+.emotion-btn.selected {
+  background: hsl(var(--primary)/0.15);
+  border-color: hsl(var(--primary)/0.5);
+  box-shadow: 0 0 0 3px hsl(var(--primary)/0.1), inset 0 1px 0 hsl(var(--primary)/0.2);
+}
+
+/* ── Timeline item ── */
+.timeline-item {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--card-border));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.timeline-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Animated gradient heading ── */
+.animated-gradient {
+  background: linear-gradient(270deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)));
+  background-size: 400% 400%;
+  animation: gradient-shift 6s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Floating icon ── */
+.float-icon {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ── Card — clean solid with visible elevation ── */
+.glass-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--card-border));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ── Feature card — gradient top border + hover glow ── */
+.feature-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--card-border));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px hsl(var(--primary)/0.2);
+  border-color: hsl(var(--primary)/0.3);
+}
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+/* ── CTA card — gradient border glow ── */
+.cta-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--primary)/0.3);
+  border-radius: 1.25rem;
+  box-shadow: 0 0 0 1px hsl(var(--primary)/0.08), var(--shadow-lg);
+}
+
+/* ── Hero gradient button — purple → pink ── */
+.hero-btn {
+  background: linear-gradient(135deg, hsl(250 82% 64%), hsl(290 70% 66%), hsl(330 78% 64%));
+  background-size: 200% 200%;
+  animation: gradient-shift 5s ease infinite;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 22px hsl(var(--primary)/0.45), 0 0 0 1px hsl(330 80% 68%/0.12), 0 1px 4px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+}
+.hero-btn:hover {
+  box-shadow: 0 6px 32px hsl(var(--primary)/0.55), 0 0 18px var(--pink-glow), 0 2px 8px rgba(0,0,0,0.3);
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+.hero-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.get-started-pulse {
+  animation: gradient-shift 5s ease infinite, pulse-soft 3.4s ease-in-out infinite;
+}
+
+button, [role="button"], a[class*="btn"] {
+  transition: transform 0.18s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+button:hover, [role="button"]:hover, a[class*="btn"]:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+button:active, [role="button"]:active, a[class*="btn"]:active {
+  transform: scale(0.97);
+}
+
+input:focus, textarea:focus, select:focus {
+  box-shadow: 0 0 0 2px hsl(250 82% 70% / 0.22) !important;
+  border-color: hsl(250 82% 70% / 0.65) !important;
+}
+
+/* ── Primary button — solid, elegant lift on hover ── */
+.glow-btn {
+  background: linear-gradient(135deg, hsl(250 82% 64%), hsl(310 72% 66%));
+  color: white;
+  border: none;
+  box-shadow: 0 3px 16px hsl(var(--primary)/0.35);
+  transition: all 0.18s ease;
+}
+.glow-btn:hover {
+  box-shadow: 0 5px 24px hsl(var(--primary)/0.5), 0 0 12px var(--pink-glow);
+  transform: translateY(-1px);
+  filter: brightness(1.07);
+}
+
+/* ── Pink AI button ── */
+.ai-btn {
+  background: linear-gradient(135deg, hsl(280 75% 62%), hsl(330 80% 64%));
+  color: white;
+  border: none;
+  box-shadow: 0 4px 20px hsl(330 80% 68%/0.35), 0 1px 4px rgba(0,0,0,0.25);
+  transition: all 0.2s ease;
+}
+.ai-btn:hover {
+  box-shadow: 0 6px 28px hsl(330 80% 68%/0.52), 0 2px 8px rgba(0,0,0,0.25);
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+.ai-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Pink glow card ── */
+.pink-glow-card {
+  border: 1px solid hsl(330 70% 60%/0.28);
+  box-shadow: 0 0 0 1px hsl(330 70% 60%/0.08), 0 4px 24px hsl(330 80% 68%/0.16), 0 1px 6px rgba(0,0,0,0.3);
+}
+
+/* ── Hero gradient text ── */
+.hero-gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)) 20%, hsl(var(--accent)) 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Gradient text — purple to pink ── */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(330 80% 68%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* ═══════════════════════════════════════════
+   CLERK — comprehensive style fixes
+   ═══════════════════════════════════════════ */
+
+/* Hide dev badges */
+.cl-internal-b3al4t,
+.cl-internal-1hp5nqm,
+.cl-badge,
+.cl-devBadge,
+.cl-environmentBadge {
+  display: none !important;
+}
+
+/* Cover the dev-mode stripe */
+.cl-card {
+  position: relative;
+  overflow: hidden;
+}
+.cl-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 30px;
+  background: hsl(228 22% 12%);
+  border-radius: 0 0 calc(var(--radius) - 1px) calc(var(--radius) - 1px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── All Clerk text — force visibility ── */
+.cl-headerTitle,
+.cl-headerTitle *,
+.cl-headerSubtitle,
+.cl-formFieldLabel,
+.cl-formFieldLabel *,
+.cl-formFieldHintText,
+.cl-formFieldHintText *,
+.cl-formResendCodeLink,
+.cl-identityPreviewText,
+.cl-identityPreviewEditButtonIcon,
+.cl-phoneInputBox,
+.cl-otpCodeField *,
+.cl-alternativeMethodsBlockButton,
+.cl-alternativeMethodsBlockButtonText,
+.cl-dividerText {
+  color: hsl(220 18% 88%) !important;
+}
+
+/* Social/OAuth buttons */
+.cl-socialButtonsBlockButton {
+  background: hsl(228 20% 16%) !important;
+  border: 1px solid hsl(226 18% 28%) !important;
+  color: hsl(220 18% 88%) !important;
+  transition: background 0.15s ease !important;
+}
+.cl-socialButtonsBlockButton:hover {
+  background: hsl(228 20% 20%) !important;
+}
+.cl-socialButtonsBlockButtonText {
+  color: hsl(220 18% 88%) !important;
+}
+
+/* Input fields */
+.cl-formFieldInput {
+  background: hsl(228 20% 17%) !important;
+  border: 1px solid hsl(226 18% 26%) !important;
+  color: hsl(220 18% 92%) !important;
+  transition: border-color 0.15s ease !important;
+}
+.cl-formFieldInput:focus {
+  border-color: hsl(250 82% 70%) !important;
+  box-shadow: 0 0 0 2px hsl(250 82% 70% / 0.15) !important;
+}
+.cl-formFieldInput::placeholder {
+  color: hsl(225 14% 50%) !important;
+}
+
+/* Primary action button */
+.cl-formButtonPrimary {
+  background: linear-gradient(135deg, hsl(250 82% 66%), hsl(260 75% 72%)) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 20px hsl(250 82% 70% / 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+.cl-formButtonPrimary:hover {
+  box-shadow: 0 6px 28px hsl(250 82% 70% / 0.55) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Footer links */
+.cl-footerActionText {
+  color: hsl(225 14% 62%) !important;
+}
+.cl-footerActionLink {
+  color: hsl(250 82% 70%) !important;
+  font-weight: 600 !important;
+}
+.cl-footerActionLink:hover {
+  color: hsl(250 82% 78%) !important;
+}
+
+/* Divider */
+.cl-dividerLine {
+  background: hsl(226 18% 24%) !important;
+}
+.cl-dividerText {
+  color: hsl(225 14% 48%) !important;
+  font-size: 12px !important;
+}
+
+/* ── Clerk popover — readable text on dark bg ── */
+.cl-userButtonPopoverCard {
+  background: hsl(var(--popover)) !important;
+  border: 1px solid hsl(var(--popover-border)) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.cl-userButtonPopoverActionButton,
+.cl-userButtonPopoverActionButtonText,
+.cl-userButtonPopoverActionButtonIcon,
+.cl-userButtonPopoverFooterPagesLink,
+.cl-userPreviewTextContainer,
+.cl-userPreviewSecondaryIdentifier,
+.cl-userButtonPopoverFooter * {
+  color: hsl(var(--popover-foreground)) !important;
+}
+
+.cl-userButtonPopoverActionButton:hover {
+  background: hsl(var(--secondary)) !important;
+}
+
+.cl-userButtonPopoverMain,
+.cl-userButtonPopoverFooter {
+  background: transparent !important;
+}

@@ -1,0 +1,62 @@
+You are a senior full-stack engineer and UI/UX designer.
+
+Your task is to take my current broken React/Vite website and transform it into a fully working, production-ready, visually stunning application.
+
+⚠️ FIRST: FIX EVERYTHING
+- Detect and resolve ALL errors (build errors, console errors, dependency issues, routing issues, API issues).
+- Ensure the project runs perfectly with:
+  - npm install
+  - npm run dev
+  - npm run build
+- Fix Vite config, proxy issues, and deployment issues.
+- Ensure no blank screen, no crashes, no failed API calls.
+- Clean up unnecessary files and remove dead code.
+
+⚙️ THEN: OPTIMIZE STRUCTURE
+- Refactor into clean, scalable React architecture:
+  - components/
+  - pages/
+  - hooks/
+  - utils/
+- Use best practices (functional components, hooks, clean state management).
+- Improve performance and loading speed.
+
+🎨 THEN: MAKE IT VISUALLY INSANE (NOT GENERIC AI LOOKING)
+I want a PREMIUM, MODERN, "WOW" design that looks like a high-end startup product.
+
+Design requirements:
+- Glassmorphism + soft gradients + subtle glow effects
+- Smooth animations (Framer Motion or CSS transitions)
+- Clean spacing, modern typography
+- Premium color palette (no random colors)
+
+🌗 DARK/LIGHT MODE (VERY IMPORTANT)
+- Add a BEAUTIFUL theme toggle (dark ↔ light)
+- Colors should NOT just invert
+- Each theme should feel intentionally designed:
+  - Light mode: soft, airy, elegant
+  - Dark mode: deep, rich, futuristic
+- Add smooth animated transition when switching themes
+- Use gradients that SHIFT slightly depending on theme
+- Store theme preference in localStorage
+
+✨ ADVANCED UI DETAILS
+- Add hover animations everywhere (buttons, cards, links)
+- Add micro-interactions (click feedback, smooth transitions)
+- Add subtle background effects (gradient blobs, noise, glow)
+- Add animated hero section
+- Add scroll-based animations (fade/slide in)
+
+📱 RESPONSIVENESS
+- Perfect on mobile, tablet, desktop
+- No overflow, no broken layouts
+
+🚀 FINAL OUTPUT
+- Fully working project
+- Clean, readable code
+- No errors in console
+- Ready for deployment (Vercel/Netlify)
+
+IMPORTANT:
+Do NOT explain much.
+Just fix, upgrade, and return the complete improved code.
